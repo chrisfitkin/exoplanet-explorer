@@ -48,13 +48,13 @@ Instructions:
         } else {
           // It failed :(
           // Be nice and reject with req.statusText
-          reject(req.statusText)
+          reject(Error(req.statusText))
         }
       };
       req.onerror = function() {
         // It failed :(
         // Pass a 'Network Error' to reject
-        reject('Network Error')
+        reject(Error('Network Error'))
       };
       req.send();
     });

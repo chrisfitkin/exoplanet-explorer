@@ -35,17 +35,21 @@ Instructions:
 
     Your code goes here!
      */
-    return new Promise(function(resolve,reject) {
-      fetch(url, {
-      	method: 'get'
-      }).then(function(response) {
-        console.log('----- get response -----')
-        console.log(response)
-      	resolve(response)
-      }).catch(function(err) {
-      	reject(err)
-      });
+
+    return fetch(url, {
+      method: 'get'
     })
+    // return new Promise(function(resolve,reject) {
+    //   fetch(url, {
+    //   	method: 'get'
+    //   }).then(function(response) {
+    //     console.log('----- get response -----')
+    //     console.log(response)
+    //   	resolve(response)
+    //   }).catch(function(err) {
+    //   	reject(err)
+    //   });
+    // })
   }
 
   /**
@@ -66,7 +70,7 @@ Instructions:
         console.log(response.json())
         // var body = JSON.parse(response.body)
         // console.log(body)
-        resolve(response.body)
+        resolve(response.json())
       }).catch(function(error) {
         reject(error)
       });
@@ -82,6 +86,8 @@ Instructions:
     Your code goes here too!
      */
     getJSON('../data/earth-like-results.json').then( function(response) {
+      console.log('----- WebComponentsReady response -----')
+      console.log(response)
       addSearchHeader(response.query)
     }).catch(function(error){
       console.log(error)

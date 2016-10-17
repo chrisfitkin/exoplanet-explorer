@@ -35,21 +35,9 @@ Instructions:
 
     Your code goes here!
      */
-
     return fetch(url, {
       method: 'get'
     })
-    // return new Promise(function(resolve,reject) {
-    //   fetch(url, {
-    //   	method: 'get'
-    //   }).then(function(response) {
-    //     console.log('----- get response -----')
-    //     console.log(response)
-    //   	resolve(response)
-    //   }).catch(function(err) {
-    //   	reject(err)
-    //   });
-    // })
   }
 
   /**
@@ -66,11 +54,12 @@ Instructions:
     return get(url).then(function(response) {
       console.log('----- getJSON response -----')
       console.log(response)
-      console.log(response.json())
-      // var body = JSON.parse(response.body)
-      // console.log(body)
       return response.json()
     })
+
+    // return get(url).then(function(response) {
+    //   return response.json();
+    // });
   }
 
   window.addEventListener('WebComponentsReady', function() {

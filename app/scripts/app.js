@@ -63,18 +63,14 @@ Instructions:
 
     Your code goes here!
      */
-    return new Promise(function(resolve,reject) {
-      get(url).then(function(response) {
-        console.log('----- getJSON response -----')
-        console.log(response)
-        console.log(response.json())
-        // var body = JSON.parse(response.body)
-        // console.log(body)
-        resolve(response.json())
-      }).catch(function(error) {
-        reject(error)
-      });
-    });
+    return get(url).then(function(response) {
+      console.log('----- getJSON response -----')
+      console.log(response)
+      console.log(response.json())
+      // var body = JSON.parse(response.body)
+      // console.log(body)
+      return response.json()
+    })
   }
 
   window.addEventListener('WebComponentsReady', function() {

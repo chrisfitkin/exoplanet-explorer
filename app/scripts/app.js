@@ -66,8 +66,18 @@ Instructions:
     .then(function(response) {
       console.log(response.results)
 
+      var i = 0
       var createArray = response.results.map(function(url) {
-          return getJSON(url).then(createPlanetThumb)
+          console.log(i++)
+          let j = i
+          return new Promise (function(resolve, reject) {
+            getJSON(url)
+              .then(createPlanetThumb)
+              .then(function() {
+                console.log(j)
+              })
+              .then(resolve())
+          });
       });
       console.log(createArray)
 

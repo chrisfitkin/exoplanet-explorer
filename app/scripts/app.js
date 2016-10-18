@@ -66,27 +66,39 @@ Instructions:
     .then(function(response) {
       console.log(response.results)
 
+      // http://www.datchley.name/promise-patterns-anti-patterns/#executingpromisesinseries
+
       var i = 0
       var createArray = response.results.map(function(url) {
           console.log(i++)
           let j = i
-          return new Promise (function(resolve, reject) {
-            getJSON(url)
+          return function() {
+            console.log('processing ' + j + ' '+ url)
+            return Promise.resolve(function() {
+              console.log('resolving ' + j + ' '+url)
+              getJSON(url)
               .then(createPlanetThumb)
               .then(function() {
-                console.log(j)
+                console.log('resolved ' + j + ' '+url)
               })
-              .then(resolve())
-          });
+            });
+          }
       });
       console.log(createArray)
+      function pseries(list) {
+        var p = Promise.resolve();
+        return list.reduce(function(pacc, fn) {
+          return pacc = pacc.then(fn);
+        }, p);
+      }
+      var result = pseries(createArray);
 
-      var reducedPromise = createArray.reduce((p, fn) => p.then(fn), Promise.resolve())
-        .then(function(result) {
-          console.log('Display complete')
-        })
-        .catch(Error('Could not load JSON planets'))
-      console.log(reducedPromise)
+      // var reducedPromise = createArray.reduce((p, fn) => p.then(fn), Promise.resolve())
+      //   .then(function(result) {
+      //     console.log('Display complete')
+      //   })
+      //   .catch(Error('Could not load JSON planets'))
+      // console.log(reducedPromise)
 
       // response.results.forEach(function(url) {
       //   getJSON(url).then(createPlanetThumb);

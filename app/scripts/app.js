@@ -64,45 +64,14 @@ Instructions:
      */
     getJSON('../data/earth-like-results.json')
     .then(function(response) {
-      console.log(response.results)
-
-      // http://www.datchley.name/promise-patterns-anti-patterns/#executingpromisesinseries
-
-      var i = 0
-      var createArray = response.results.map(function(url) {
-          console.log(i++)
-          let j = i
-          return function() {
-            console.log('processing ' + j + ' '+ url)
-            return Promise.resolve(function() {
-              console.log('resolving ' + j + ' '+url)
-              getJSON(url)
-              .then(createPlanetThumb)
-              .then(function() {
-                console.log('resolved ' + j + ' '+url)
-              })
-            });
-          }
+      const myPromise = Promise.resolve();
+      response.results.forEach(function(url) {
+        var newPromise = myPromise
+          .then(getJSON(url))
+          .then(createPlanetThumb);
       });
-      console.log(createArray)
-      function pseries(list) {
-        var p = Promise.resolve();
-        return list.reduce(function(pacc, fn) {
-          return pacc = pacc.then(fn);
-        }, p);
-      }
-      var result = pseries(createArray);
-
-      // var reducedPromise = createArray.reduce((p, fn) => p.then(fn), Promise.resolve())
-      //   .then(function(result) {
-      //     console.log('Display complete')
-      //   })
-      //   .catch(Error('Could not load JSON planets'))
-      // console.log(reducedPromise)
-
-      // response.results.forEach(function(url) {
-      //   getJSON(url).then(createPlanetThumb);
-      // });
+    }).catch(function(e){
+      console.log(e)
     });
   });
 })(document);

@@ -64,11 +64,16 @@ Instructions:
      */
     getJSON('../data/earth-like-results.json')
     .then(function(response) {
-      const myPromise = Promise.resolve();
+
+      var sequence = Promise.resolve();
+
+      addSearchHeader(response.query);
+
       response.results.forEach(function(url) {
-        var newPromise = myPromise
-          .then(getJSON(url))
-          .then(createPlanetThumb);
+        sequence = sequence.then(function() {
+          return getJSON(url)
+        })
+        .then(createPlanetThumb);
       });
     }).catch(function(e){
       console.log(e)

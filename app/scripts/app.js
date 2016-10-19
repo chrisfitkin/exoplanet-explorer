@@ -65,9 +65,9 @@ Instructions:
     getJSON('../data/earth-like-results.json')
     .then(function(response) {
 
-      var sequence = Promise.resolve();
+    addSearchHeader(response.query);
 
-      addSearchHeader(response.query);
+      var sequence = Promise.resolve();
 
       response.results.forEach(function(url) {
         sequence = sequence.then(function() {

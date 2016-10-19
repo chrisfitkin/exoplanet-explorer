@@ -62,19 +62,17 @@ Instructions:
     getJSON('../data/earth-like-results.json').then(function(response) {
       // console.log(data)
       addSearchHeader(response.query);
-      const promiseArray = response.results.map(function(url) {
+      var promiseArray = response.results.map(function(url) {
         // console.log(url);
-        return new Promise(function() {
-          getJSON(url).then(createPlanetThumb);
-        });
-      })
+        return getJSON(url);
+      });
       console.log(promiseArray);
-
-      // Promise.all(promiseArray).then(function(result) {
-      //   console.log(result);
-      // }).catch(function(e) {
-      //   console.log(e)
-      // });
+      return Promise.all(promiseArray)
+    }).then(function(planets) {
+      console.log(planets);
+      planets.forEach(function(planet) {
+        createPlanetThumb(planet);
+      });
 
     }).catch(function(e) {
       console.log(e);
